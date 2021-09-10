@@ -12,4 +12,5 @@
 
    creation de l home page et import de dashboard et homepage dans App.js (pour config le rendu)
 
-6. dans app.js , import de firebase et de l apiKeys du firebaseConfig
+6. dans app.js , import de firebase , auth et de l apiKeys du firebaseConfig
+   et mise en place de la modif du state pour la procedure de connection
