@@ -1,14 +1,38 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import Dashboard from './navigation/dashboard';
+import Homepage from './navigation/homepage';
+import apiKeys from './config/keys';
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+export default class App extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      isLoaded: true,
+//isAuthenticated est false par defaut       
+      isAuthenticationReady: false,
+      isAuthenticated: false
+    }
+// initialisation de l app avec l auth firebase
+    if (!firebase.apps.length) {
+      firebase.initializeApp(apiKeys.firebaseConfig)
+      firebase.auth().onAuthStateChanged((user) => {
+// une fois l'auth validé elle devient true      
+        this.setState({isAuthenticationReady: true})
+        this.setState({isAuthenticated: !! user}) 
+      })
+    }
+
+  }
+  render() {
+    return (
+      <View style={styles.container}>
+        {(this.state.isAuthenticated) ? <Dashboard/> : <Homepage/> }
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
